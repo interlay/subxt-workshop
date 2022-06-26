@@ -20,22 +20,8 @@ pub type AccountInfo = polkadot::runtime_types::frame_system::AccountInfo<u32, A
 ///      ...
 /// }
 /// ```
-pub async fn get_first_n_accounts(api: PolkadotRuntimeApi, n: u32) -> Result<Vec<AccountInfo>, Box<dyn Error>> {
-    let prefix = StorageKeyPrefix::new::<polkadot::system::storage::Account>();
-    let keys = api
-        .client
-        .rpc()
-        .storage_keys_paged(Some(prefix.to_storage_key()), n, None, None)
-        .await?;
-
-    let mut accounts = Vec::new();
-    for k in keys {
-        if let Some(storage_data) = api.client.storage().fetch_raw(k, None).await? {
-            accounts.push(AccountInfo::decode(&mut &storage_data.0[..])?);
-        }
-    }
-
-    Ok(accounts)
+pub async fn get_first_n_accounts(_api: PolkadotRuntimeApi, _n: u32) -> Result<Vec<AccountInfo>, Box<dyn Error>> {
+    Ok(Default::default())
 }
 
 #[tokio::test]

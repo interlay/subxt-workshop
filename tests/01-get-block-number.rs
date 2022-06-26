@@ -15,8 +15,8 @@ use subxt_workshop::{with_default_client, PolkadotRuntimeApi};
 ///     .storage_item_name(Some(block_hash))
 ///     .await?;
 /// ```
-pub async fn get_block_number(api: PolkadotRuntimeApi, block_hash: H256) -> Result<u32, Box<dyn Error>> {
-    Ok(api.storage().system().number(Some(block_hash)).await?)
+pub async fn get_block_number(_api: PolkadotRuntimeApi, _block_hash: H256) -> Result<u32, Box<dyn Error>> {
+    Ok(Default::default())
 }
 
 #[tokio::test]

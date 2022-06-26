@@ -16,8 +16,8 @@ use subxt_workshop::{with_default_client, PolkadotRuntimeApi};
 ///     .storage_item_name(..., None)
 ///     .await?;
 /// ```
-pub async fn get_balance(api: PolkadotRuntimeApi, account: AccountId32) -> Result<u128, Box<dyn Error>> {
-    Ok(api.storage().system().account(&account, None).await?.data.free)
+pub async fn get_balance(_api: PolkadotRuntimeApi, _account: AccountId32) -> Result<u128, Box<dyn Error>> {
+    Ok(Default::default())
 }
 
 #[tokio::test]

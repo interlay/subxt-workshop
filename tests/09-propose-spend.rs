@@ -17,33 +17,23 @@ type ProposedEvent = polkadot::treasury::events::Proposed;
 /// let event = events.find_first::<Event>()?.unwrap();
 /// ```
 pub async fn propose_spend(
-    api: PolkadotRuntimeApi,
-    signer: PairSigner<DefaultConfig, Pair>,
-    value: u128,
+    _api: PolkadotRuntimeApi,
+    _signer: PairSigner<DefaultConfig, Pair>,
+    _value: u128,
 ) -> Result<u32, Box<dyn Error>> {
-    let events = api
-        .tx()
-        .treasury()
-        .propose_spend(value, signer.account_id().clone().into())?
-        .sign_and_submit_then_watch_default(&signer)
-        .await?
-        .wait_for_finalized_success()
-        .await?;
-
-    let proposed = events.find_first::<ProposedEvent>()?.unwrap();
-    Ok(proposed.proposal_index)
+    Ok(Default::default())
 }
 
 /// # Exercise 09 (B)
 ///
 /// Implement a function to return the `Proposal` in storage.
 pub async fn get_proposal(api: PolkadotRuntimeApi, proposal_index: u32) -> Result<Proposal, Box<dyn Error>> {
-    Ok(api
-        .storage()
-        .treasury()
-        .proposals(&proposal_index, None)
-        .await?
-        .unwrap())
+    Ok(Proposal {
+        proposer: AccountKeyring::One.to_account_id(),
+        value: 0,
+        beneficiary: AccountKeyring::Two.to_account_id(),
+        bond: 0,
+    })
 }
 
 /// # Exercise 09 (C)
@@ -52,9 +42,7 @@ pub async fn get_proposal(api: PolkadotRuntimeApi, proposal_index: u32) -> Resul
 ///
 /// Source: https://github.com/paritytech/substrate/blob/polkadot-v0.9.18/frame/treasury/src/lib.rs#L410-L417
 pub fn calculate_proposal_bond(api: PolkadotRuntimeApi, value: u128) -> Result<u128, Box<dyn Error>> {
-    let proposal_bond = api.constants().treasury().proposal_bond()?;
-    let proposal_bond_minimum = api.constants().treasury().proposal_bond_minimum()?;
-    Ok(std::cmp::max(proposal_bond_minimum, proposal_bond * value))
+    Ok(Default::default())
 }
 
 #[tokio::test]

@@ -26,27 +26,19 @@ use subxt_workshop::{with_default_client, PolkadotRuntimeApi};
 ///      .await?;
 /// ```
 pub async fn transfer_balance(
-    api: PolkadotRuntimeApi,
-    signer: PairSigner<DefaultConfig, Pair>,
-    dest: MultiAddress<AccountId32, ()>,
-    amount: u128,
+    _api: PolkadotRuntimeApi,
+    _signer: PairSigner<DefaultConfig, Pair>,
+    _dest: MultiAddress<AccountId32, ()>,
+    _amount: u128,
 ) -> Result<(), Box<dyn Error>> {
-    api.tx()
-        .balances()
-        .transfer(dest, amount)?
-        .sign_and_submit_then_watch_default(&signer)
-        .await?
-        .wait_for_finalized_success()
-        .await?;
-
     Ok(())
 }
 
 /// # Exercise 06 (B)
 ///
 /// See: 02-get-balance.rs
-pub async fn get_balance(api: PolkadotRuntimeApi, account: AccountId32) -> Result<u128, Box<dyn Error>> {
-    Ok(api.storage().system().account(&account, None).await?.data.free)
+pub async fn get_balance(_api: PolkadotRuntimeApi, _account: AccountId32) -> Result<u128, Box<dyn Error>> {
+    Ok(Default::default())
 }
 
 #[tokio::test]

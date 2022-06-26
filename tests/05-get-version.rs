@@ -12,8 +12,8 @@ type RuntimeVersion = polkadot::runtime_types::sp_version::RuntimeVersion;
 /// ```
 /// let value = api.constants().pallet_name().constant_item_name()?;
 /// ```
-pub fn get_version(api: PolkadotRuntimeApi) -> Result<RuntimeVersion, Box<dyn Error>> {
-    Ok(api.constants().system().version()?)
+pub fn get_version(_api: PolkadotRuntimeApi) -> Result<RuntimeVersion, Box<dyn Error>> {
+    Ok(Default::default())
 }
 
 #[tokio::test]

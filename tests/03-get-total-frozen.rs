@@ -17,15 +17,8 @@ use subxt_workshop::{with_default_client, PolkadotRuntimeApi};
 ///     ...
 /// }
 /// ```
-pub async fn get_total_frozen(api: PolkadotRuntimeApi) -> Result<u128, Box<dyn Error>> {
-    let mut iter = api.storage().system().account_iter(None).await?;
-
-    let mut frozen = 0;
-    while let Some((_, account)) = iter.next().await? {
-        frozen += account.data.misc_frozen;
-    }
-
-    Ok(frozen)
+pub async fn get_total_frozen(_api: PolkadotRuntimeApi) -> Result<u128, Box<dyn Error>> {
+    Ok(Default::default())
 }
 
 #[tokio::test]

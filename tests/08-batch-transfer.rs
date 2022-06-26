@@ -19,31 +19,18 @@ type BalancesCall = polkadot::runtime_types::pallet_balances::pallet::Call;
 /// let calls = vec![EncodedCall::Pallet(PalletCall::extrinsic { params }];
 /// ```
 pub async fn batch_transfer(
-    api: PolkadotRuntimeApi,
-    signer: PairSigner<DefaultConfig, Pair>,
-    recipients: Vec<(MultiAddress<AccountId32, ()>, u128)>,
+    _api: PolkadotRuntimeApi,
+    _signer: PairSigner<DefaultConfig, Pair>,
+    _recipients: Vec<(MultiAddress<AccountId32, ()>, u128)>,
 ) -> Result<(), Box<dyn Error>> {
-    let calls = recipients
-        .into_iter()
-        .map(|(dest, value)| EncodedCall::Balances(BalancesCall::transfer { dest, value }))
-        .collect();
-
-    api.tx()
-        .utility()
-        .batch(calls)?
-        .sign_and_submit_then_watch_default(&signer)
-        .await?
-        .wait_for_finalized_success()
-        .await?;
-
     Ok(())
 }
 
 /// # Exercise 08 (B)
 ///
 /// See: 02-get-balance.rs
-pub async fn get_balance(api: PolkadotRuntimeApi, account: AccountId32) -> Result<u128, Box<dyn Error>> {
-    Ok(api.storage().system().account(&account, None).await?.data.free)
+pub async fn get_balance(_api: PolkadotRuntimeApi, _account: AccountId32) -> Result<u128, Box<dyn Error>> {
+    Ok(Default::default())
 }
 
 #[tokio::test]

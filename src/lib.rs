@@ -7,7 +7,8 @@ use subxt::{ClientBuilder, DefaultConfig, PolkadotExtrinsicParams};
     derive_for_type(type = "sp_version::RuntimeVersion", derive = "Eq, PartialEq"),
     derive_for_type(type = "frame_system::AccountInfo", derive = "Eq, PartialEq"),
     derive_for_type(type = "pallet_balances::AccountData", derive = "Eq, PartialEq"),
-    derive_for_type(type = "pallet_treasury::Proposal", derive = "Eq, PartialEq")
+    derive_for_type(type = "pallet_treasury::Proposal", derive = "Eq, PartialEq"),
+    derive_for_type(type = "sp_version::RuntimeVersion", derive = "Default")
 )]
 pub mod polkadot {
     #[subxt(substitute_type = "sp_arithmetic::per_things::Permill")]

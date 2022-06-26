@@ -36,19 +36,13 @@ const MAX_WEIGHT: u64 = 1_000_000_000_000;
 ///     // do something
 /// }
 /// ```
-pub async fn wait_for_event<Ev, Cb, Fut>(api: PolkadotRuntimeApi, callback: Cb) -> Result<(), Box<dyn Error>>
+pub async fn wait_for_event<Ev, Cb, Fut>(_api: PolkadotRuntimeApi, _callback: Cb) -> Result<(), Box<dyn Error>>
 where
     Ev: Event,
     Cb: Fn(Ev) -> Fut,
     Fut: Future<Output = Result<(), Box<dyn Error>>>,
 {
-    let event_sub = api.events().subscribe_finalized().await?;
-    let mut filter_events = event_sub.filter_events::<(Ev,)>();
-    while let Some(Ok(filtered_event)) = filter_events.next().await {
-        return callback(filtered_event.event).await;
-    }
-
-    Ok(())
+    Err("Event not found".into())
 }
 
 /// # Exercise 10 (B)
@@ -57,25 +51,11 @@ where
 ///
 /// Tip: use `as_multi` with a threshold of `2`.
 pub async fn create_multisig(
-    api: PolkadotRuntimeApi,
-    signer: PairSigner<DefaultConfig, Pair>,
-    other_signatories: Vec<AccountId32>,
-    encoded_call: EncodedCall,
+    _api: PolkadotRuntimeApi,
+    _signer: PairSigner<DefaultConfig, Pair>,
+    _other_signatories: Vec<AccountId32>,
+    _encoded_call: EncodedCall,
 ) -> Result<(), Box<dyn Error>> {
-    api.tx()
-        .multisig()
-        .as_multi(
-            2,
-            other_signatories,
-            None,
-            WrapperKeepOpaque::from_encoded(encoded_call.encode()),
-            true,
-            MAX_WEIGHT,
-        )?
-        .sign_and_submit_then_watch_default(&signer)
-        .await?
-        .wait_for_finalized_success()
-        .await?;
     Ok(())
 }
 
@@ -86,17 +66,11 @@ pub async fn create_multisig(
 ///
 /// This is required for `approve_multisig`.
 pub async fn get_timepoint(
-    api: PolkadotRuntimeApi,
-    multisig_account_id: &AccountId32,
-    call_hash: &[u8; 32],
+    _api: PolkadotRuntimeApi,
+    _multisig_account_id: &AccountId32,
+    _call_hash: &[u8; 32],
 ) -> Result<Timepoint, Box<dyn Error>> {
-    Ok(api
-        .storage()
-        .multisig()
-        .multisigs(multisig_account_id, call_hash, None)
-        .await?
-        .unwrap()
-        .when)
+    Ok(Timepoint { height: 0, index: 0 })
 }
 
 /// # Exercise 10 (D)
@@ -105,25 +79,12 @@ pub async fn get_timepoint(
 ///
 /// Tip: use `approve_as_multi` with a threshold of `2`.
 pub async fn approve_multisig(
-    api: PolkadotRuntimeApi,
-    signer: PairSigner<DefaultConfig, Pair>,
-    other_signatories: Vec<AccountId32>,
-    timepoint: Timepoint,
-    call_hash: [u8; 32],
+    _api: PolkadotRuntimeApi,
+    _signer: PairSigner<DefaultConfig, Pair>,
+    _other_signatories: Vec<AccountId32>,
+    _timepoint: Timepoint,
+    _call_hash: [u8; 32],
 ) -> Result<(), Box<dyn Error>> {
-    api.tx()
-        .multisig()
-        .approve_as_multi(
-            2,                 // threshold
-            other_signatories, // other_signatories
-            Some(timepoint),   // maybe_timepoint
-            call_hash,         // call_hash
-            MAX_WEIGHT,        // max_weight
-        )?
-        .sign_and_submit_then_watch_default(&signer)
-        .await?
-        .wait_for_finalized_success()
-        .await?;
     Ok(())
 }
 
